@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+<group ns ="ns0">
+  <node name="kimm_joint_planner_ros_interface_server" pkg="kimm_joint_planner_ros_interface" type="kimm_joint_planner_ros_interface_server" output="screen" >
+  </node>
+</group>
+</launch>

@@ -1,0 +1,12 @@
+sensor_msgs/JointState current_joint
+sensor_msgs/JointState[] target_joint
+float64 duration
+int16 traj_type
+float64[] kp
+float64[] kv
+std_msgs/Bool[] mask
+float64 vel_limit
+float64 acc_limit
+---
+std_msgs/Bool iscalc
+sensor_msgs/JointState[] res_traj

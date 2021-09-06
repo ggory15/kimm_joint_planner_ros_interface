@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="kimm_welding_planner_client" pkg="kimm_welding_planner" type="kimm_welding_planner_client" output="screen" >
+  </node>
+
+</launch>

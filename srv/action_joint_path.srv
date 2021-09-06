@@ -1,0 +1,5 @@
+std_msgs/Bool test
+---
+sensor_msgs/JointState[] res_traj
+float64[] kp
+float64[] kv
