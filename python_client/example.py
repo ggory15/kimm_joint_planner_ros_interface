@@ -64,9 +64,9 @@ def joint_trajectory_deg2rad(joint_trajectory):
 class Example:
     def __init__(self):
         self.listener = tf.TransformListener()
-        rospy.wait_for_service("ns0/kimm_joint_planner_ros_interface_server/plan_joint_path")
+        rospy.wait_for_service("ns1/kimm_joint_planner_ros_interface_server/plan_joint_path")
         self.plan_joint_motion = rospy.ServiceProxy(
-            "ns0/kimm_joint_planner_ros_interface_server/plan_joint_path",
+            "ns1/kimm_joint_planner_ros_interface_server/plan_joint_path",
             kimm_joint_planner_ros_interface.srv.plan_joint_path,
         )
         self.req = kimm_joint_planner_ros_interface.srv.plan_joint_pathRequest()
