@@ -60,25 +60,25 @@ include_directories(
   ${kimm_hqp_controller_INCLUDE_DIRS}
 )
 
-# SET(${PROJECT_NAME}_HEADERS
-#   include/kimm_welding_planner_ros_interface/corrugation.h
-# )
-# SET(${PROJECT_NAME}_SOURCES
-#   src/corrugation.cpp
-# )
+SET(${PROJECT_NAME}_HEADERS
+  include/kimm_joint_planner_ros_interface/planner.h
+)
+SET(${PROJECT_NAME}_SOURCES
+  src/planner.cpp
+)
 
-# ADD_SOURCE_GROUP(${PROJECT_NAME}_HEADERS)
-# ADD_SOURCE_GROUP(${PROJECT_NAME}_SOURCES)
-# ADD_LIBRARY(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
+ADD_SOURCE_GROUP(${PROJECT_NAME}_HEADERS)
+ADD_SOURCE_GROUP(${PROJECT_NAME}_SOURCES)
+ADD_LIBRARY(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
 
-# set(EXTRA_LIB ${EXTRA_LIB} ${Boost_LIBRARIES} ${kimm_trajectory_smoother_LIBRARIES})
-# TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR} ${kimm_trajectory_smoother_INCLUDE_DIRS})
-# TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
+set(EXTRA_LIB ${EXTRA_LIB} ${Boost_LIBRARIES} ${kimm_trajectory_smoother_LIBRARIES})
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR} ${kimm_trajectory_smoother_INCLUDE_DIRS})
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
 # target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LIB})
 
 #ros_tutorial_srv_server
 add_executable(${PROJECT_NAME}_server src/joint_planner_server.cpp)
-target_link_libraries(${PROJECT_NAME}_server  ${catkin_LIBRARIES} ${kimm_hqp_controller_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_server ${PROJECT_NAME} ${catkin_LIBRARIES} ${kimm_hqp_controller_LIBRARIES})
 add_dependencies(${PROJECT_NAME}_server kimm_joint_planner_ros_interface_gencpp )
 
 # #ros_tutorial_srv_client
