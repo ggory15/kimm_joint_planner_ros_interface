@@ -20,6 +20,10 @@ find_package(Eigen3 REQUIRED)
 
 find_package(kimm_hqp_controller REQUIRED)
 
+add_message_files(
+  FILES
+  JointAction.msg
+)
 
 ## Generate services in the 'srv' folder
 add_service_files(
