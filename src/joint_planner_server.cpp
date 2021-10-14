@@ -27,16 +27,29 @@ ros::ServiceServer action_server_;
 std::shared_ptr<TrajectoryEuclidianCubic> traj_cubic_;
 std::shared_ptr<TrajectoryEuclidianTimeopt> traj_timeopt_;
 std::shared_ptr<TrajectoryEuclidianConstant> traj_const_;
-int type_ = 0;
+
 Eigen::VectorXd c_joint_, t_joint_, kp_, kv_, vel_limit_, acc_limit_;
 Eigen::VectorXi mask_;
 std::vector<Eigen::VectorXd> res_traj_;
 std::vector<sensor_msgs::JointState> res_j_traj_;
+
+
+sensor_msgs::JointState current_joint_ros_;
+std::vector<sensor_msgs::JointState> target_joint_ros_;
+std::vector<std_msgs::Bool> mask_ros_;
 double duration_ = 0;
+int type_ = 0;
+float vel_limit_ros_, acc_limit_ros_;
 
 bool calculation(kimm_joint_planner_ros_interface::plan_joint_path::Request &req, kimm_joint_planner_ros_interface::plan_joint_path::Response &res)
 {
     type_ = req.traj_type;
+    current_joint_ros_ = req.current_joint;
+    target_joint_ros_ = req.target_joint;
+    vel_limit_ros_ = req.vel_limit;
+    acc_limit_ros_ = req.acc_limit;
+    mask_ros_ = req.mask;
+    
     int nq = req.current_joint.position.size();
     c_joint_.setZero(nq);
     t_joint_.setZero(nq);
@@ -75,6 +88,7 @@ bool calculation(kimm_joint_planner_ros_interface::plan_joint_path::Request &req
         res_traj_= traj_cubic_->getWholeTrajectory();
     }
     else{
+        duration_ = 5.0;
         vel_limit_ *= req.vel_limit;
         acc_limit_ *= req.acc_limit;
 
@@ -104,6 +118,7 @@ bool calculation(kimm_joint_planner_ros_interface::plan_joint_path::Request &req
     is_run_ = false;
     return true;
 }
+
 bool updateTrajectory(kimm_joint_planner_ros_interface::action_joint_path::Request &req, kimm_joint_planner_ros_interface::action_joint_path::Response &res)
 {
     if (is_calc_ && !is_run_){
@@ -112,19 +127,26 @@ bool updateTrajectory(kimm_joint_planner_ros_interface::action_joint_path::Reque
         res.kp.clear();
         res.kv.clear();
 
-        res.res_traj = res_j_traj_;
         for (int i=0; i<7; i++){
             res.kp.push_back(kp_(i));
             res.kv.push_back(kv_(i));
         }
 
+        res.traj_type = type_;
+        res.current_joint = current_joint_ros_;
+        res.target_joint = target_joint_ros_;
+        res.vel_limit = vel_limit_ros_;
+        res.acc_limit = acc_limit_ros_;
+        res.duration = duration_;
+        res.mask = mask_ros_;
+
         return true;
     }
     else{
     	res_j_traj_.clear();
-    	res.res_traj.clear();
-        return true;
+        return false;
     }
+
     return true;
 }
 
