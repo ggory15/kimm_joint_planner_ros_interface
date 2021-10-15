@@ -1,3 +1,4 @@
+std_msgs/Time time
 sensor_msgs/JointState current_joint
 sensor_msgs/JointState[] target_joint
 float64 duration
